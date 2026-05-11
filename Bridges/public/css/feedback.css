@@ -1,0 +1,110 @@
+/* feedback.css — Bridges Recruitment System */
+.page-wrapper { padding: 28px; min-height: 100vh; }
+
+h1,h2,h3,h4,h5,h6 { color: #ffffff; }
+p, span, label, li { color: #e2e8f0; }
+.text-muted { color: #9ca3af !important; }
+.page-title { font-size: 1.75rem; font-weight: 700; color: #ffffff; }
+
+/* Cards */
+.card { background: #231d30; border: 1px solid #3d3555; border-radius: 12px; }
+.card-body { padding: 24px; }
+.card-title { font-size: 1rem; font-weight: 600; color: #ffffff; }
+
+/* Avatar */
+.avatar-circle {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, #f5c542, #e6a800);
+  color: #1a1625; font-weight: 700; font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.candidate-name { font-size: 1.3rem; font-weight: 700; color: #ffffff; }
+
+/* Score input */
+.score-input {
+  width: 90px; height: 56px;
+  background: #2d2640; border: 2px solid #f5c542; border-radius: 10px;
+  color: #f5c542; font-size: 1.6rem; font-weight: 700;
+  text-align: center; outline: none;
+}
+.score-input:focus { box-shadow: 0 0 0 3px rgba(245,197,66,0.2); }
+
+/* Ratings */
+.rating-label { font-size: 0.9rem; font-weight: 500; color: #e2e8f0; }
+.rating-value { font-size: 0.9rem; font-weight: 700; color: #f5c542; }
+.custom-range {
+  width: 100%; height: 6px; appearance: none;
+  background: #3d3555; border-radius: 999px; outline: none; cursor: pointer;
+}
+.custom-range::-webkit-slider-thumb {
+  appearance: none; width: 18px; height: 18px; border-radius: 50%;
+  background: #f5c542; cursor: pointer; border: 2px solid #1a1625;
+}
+.custom-range::-moz-range-thumb {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #f5c542; cursor: pointer; border: 2px solid #1a1625;
+}
+
+/* Recommendation cards */
+.rec-option { display: block; cursor: pointer; }
+.rec-option input[type=radio] { display: none; }
+.rec-card {
+  background: #2d2640; border: 2px solid #3d3555; border-radius: 10px;
+  padding: 16px 12px; text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+}
+.rec-card:hover { border-color: #6b7280; background: #382f4f; }
+.rec-card.selected { border-color: #f5c542; background: rgba(245,197,66,0.08); }
+.rec-icon { font-size: 1.4rem; margin-bottom: 6px; }
+.rec-label { font-size: 0.88rem; font-weight: 600; color: #ffffff; }
+
+/* Feedback textarea */
+.feedback-textarea {
+  width: 100%; background: #2d2640; border: 1px solid #3d3555; border-radius: 8px;
+  color: #ffffff; padding: 14px; font-size: 0.92rem; font-family: 'Inter', sans-serif;
+  resize: vertical; outline: none; line-height: 1.65;
+}
+.feedback-textarea:focus { border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,0.15); }
+.feedback-textarea::placeholder { color: #6b7280; }
+
+/* Buttons */
+.btn-primary-custom {
+  background: #f5c542; color: #1a1625; border: none; border-radius: 8px;
+  padding: 12px 28px; font-size: 0.92rem; font-weight: 700; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-primary-custom:hover { background: #e6b535; transform: translateY(-1px); }
+
+.btn-danger-custom {
+  background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.35);
+  border-radius: 8px; padding: 12px 20px; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-danger-custom:hover { background: rgba(239,68,68,0.25); }
+
+/* Modal */
+.modal-backdrop-custom {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75); z-index: 9999;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-backdrop-custom.open { display: flex; }
+.modal-panel {
+  background: #231d30; border: 1px solid #3d3555; border-radius: 14px;
+  width: 100%; max-width: 520px; overflow: hidden;
+  animation: fadeInModal 0.2s ease;
+}
+@keyframes fadeInModal { from { opacity:0; transform: scale(0.96); } to { opacity:1; transform: scale(1); } }
+.modal-header-custom { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid #3d3555; }
+.modal-title-danger { font-size: 1rem; font-weight: 600; color: #f87171; margin: 0; }
+.modal-close { background: none; border: none; color: #9ca3af; font-size: 1.1rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background 0.2s, color 0.2s; }
+.modal-close:hover { background: #3d3555; color: #fff; }
+.modal-body-custom { padding: 24px; }
+.modal-footer-custom { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 24px; border-top: 1px solid #3d3555; }
+.btn-outline-custom { background: transparent; color: #9ca3af; border: 1px solid #3d3555; border-radius: 8px; padding: 10px 20px; font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: background 0.2s, color 0.2s; }
+.btn-outline-custom:hover { background: #2d2640; color: #fff; }
+.form-label-custom { display: block; font-size: 0.85rem; font-weight: 600; color: #e2e8f0; margin-bottom: 8px; }
+.custom-textarea { width: 100%; background: #2d2640; border: 1px solid #3d3555; border-radius: 8px; color: #fff; padding: 12px; font-size: 0.88rem; font-family: 'Inter', sans-serif; resize: vertical; outline: none; }
+.custom-textarea:focus { border-color: #8b5cf6; }
+.custom-textarea::placeholder { color: #6b7280; }
