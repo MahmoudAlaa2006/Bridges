@@ -125,8 +125,7 @@
   </div>
 
   <!-- ====================================================
-       SECTION 3 — Interview Red Flags
-       Tracks behavioral escalations from hiring managers.
+       SECTION 3 — Interview Red Flags (Escalations)
   ==================================================== -->
   <div class="cp-card mb-4">
     <div class="cp-card-header">
@@ -139,25 +138,79 @@
           <div style="font-size:.78rem;color:var(--muted);">Behavioral concerns raised by interviewers</div>
         </div>
       </div>
-      <span class="badge-stage bs-interview">1 Pending</span>
+      <span class="badge-stage bs-interview">{{ $escalations->count() }} Pending</span>
     </div>
     <div class="cp-card-body">
       <div class="d-flex flex-column gap-2">
-
-        <!-- RED FLAG ROW: Escalated behavioral report -->
+        @forelse($escalations as $feedback)
         <div class="report-row border-accent">
           <div>
             <div class="d-flex align-items-center gap-2 flex-wrap">
-              <span style="font-weight:500;">David Miller</span>
-              <span class="badge-stage bs-interview">Score: 78%</span>
+              <span style="font-weight:500;">{{ $feedback->interview->user->name }}</span>
+              <span class="badge-stage bs-interview">Score: {{ $feedback->score }}%</span>
             </div>
-            <div style="font-size:.78rem;color:var(--muted);margin-top:3px;">Escalated by: Sarah Johnson</div>
+            <div style="font-size:.78rem;color:var(--muted);margin-top:3px;">Escalated by: {{ $feedback->user->name }} ({{ $feedback->role }})</div>
           </div>
-          <button class="btn-outline-cp btn-sm-cp" onclick="openRedFlagModal('David Miller', '78%', 'Sarah Johnson', 'Candidate appeared to be reading from notes during the technical portion. Answers seemed rehearsed and when asked follow-up questions, struggled to elaborate.')">
-            <i class="bi bi-eye"></i> Review
-          </button>
+          <div class="d-flex gap-2">
+            <button class="btn-outline-cp btn-sm-cp" onclick="openRedFlagModal('{{ $feedback->interview->user->name }}', '{{ $feedback->score }}%', '{{ $feedback->user->name }}', '{{ addslashes($feedback->escalation_reason) }}')">
+              <i class="bi bi-eye"></i> Review
+            </button>
+            <form action="{{ route('hr.escalations.resolve', $feedback->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn-sm-cp btn-primary-cp">Resolve</button>
+            </form>
+          </div>
         </div>
+        @empty
+        <p class="text-muted small italic">No active escalations.</p>
+        @endforelse
+      </div>
+    </div>
+  </div>
 
+  <!-- ====================================================
+       SECTION 4 — Time Extension Requests
+  ==================================================== -->
+  <div class="cp-card mb-4" style="border-color: var(--primary);">
+    <div class="cp-card-header">
+      <div class="d-flex align-items-center gap-3">
+        <div class="stat-icon bg-primary-soft" style="width:38px;height:38px;border-radius:9px;">
+          <i class="bi bi-clock-history text-primary"></i>
+        </div>
+        <div>
+          <h2 class="cp-card-title mb-0">Time Extension Requests</h2>
+          <div style="font-size:.78rem;color:var(--muted);">Active requests to extend interview slots</div>
+        </div>
+      </div>
+      <span class="badge-stage bs-exam">{{ $extensionRequests->count() }} Pending</span>
+    </div>
+    <div class="cp-card-body">
+      <div class="d-flex flex-column gap-2">
+        @forelse($extensionRequests as $ext)
+        <div class="report-row" style="border-left: 3px solid var(--primary);">
+          <div>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <span style="font-weight:500;">Interview #{{ $ext->interview_id }}</span>
+              <span class="badge-stage bs-exam">+{{ $ext->requested_minutes }} Minutes</span>
+            </div>
+            <div style="font-size:.78rem;color:var(--muted);margin-top:3px;">Requested by: {{ $ext->requester->name }} | Reason: {{ $ext->reason ?? 'No reason provided' }}</div>
+          </div>
+          <div class="d-flex gap-2">
+            <form action="{{ route('hr.extensions.handle', $ext->id) }}" method="POST">
+                @csrf
+                <input type="hidden" name="status" value="approved">
+                <button type="submit" class="btn-sm-cp btn-green-cp">Approve</button>
+            </form>
+            <form action="{{ route('hr.extensions.handle', $ext->id) }}" method="POST">
+                @csrf
+                <input type="hidden" name="status" value="rejected">
+                <button type="submit" class="btn-sm-cp btn-red-cp">Reject</button>
+            </form>
+          </div>
+        </div>
+        @empty
+        <p class="text-muted small italic">No pending extension requests.</p>
+        @endforelse
       </div>
     </div>
   </div>

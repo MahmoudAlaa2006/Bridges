@@ -108,7 +108,37 @@ class HRAdminDashboardController extends Controller
     public function reports()
     {
         $user = Auth::user();
-        return view('hr_admin.reports', compact('user'));
+        
+        $escalations = \App\Models\Feedback::where('is_escalated', true)
+            ->where('role', '!=', 'resolved') // Use 'role' or a new status to mark as resolved
+            ->with(['interview.user', 'user'])
+            ->get();
+
+        $extensionRequests = \App\Models\TimeExtensionRequest::where('status', 'pending')
+            ->with(['interview.user', 'requester'])
+            ->get();
+
+        return view('hr_admin.reports', compact('user', 'escalations', 'extensionRequests'));
+    }
+
+    /**
+     * Handle time extension approval/rejection.
+     */
+    public function handleExtension(Request $request, \App\Models\TimeExtensionRequest $extension)
+    {
+        $status = $request->input('status');
+        (new \App\Services\ExtensionRequestService())->handleRequest($extension, $status);
+        
+        return back()->with('success', "Extension request #{$extension->id} has been {$status}.");
+    }
+
+    /**
+     * Resolve an escalation.
+     */
+    public function resolveEscalation(\App\Models\Feedback $feedback)
+    {
+        $feedback->update(['is_escalated' => false]);
+        return back()->with('success', "Escalation for interview #{$feedback->interview_id} resolved.");
     }
 
     /**

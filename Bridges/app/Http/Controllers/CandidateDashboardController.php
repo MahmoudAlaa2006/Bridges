@@ -60,8 +60,14 @@ class CandidateDashboardController extends Controller
      */
     public function interview()
     {
+        /** @var User $user */
         $user = Auth::user();
-        return view('candidate.interview', compact('user'));
+        
+        $interviews = $user->interviews()
+            ->with(['application.job', 'slot', 'panels.user'])
+            ->get();
+
+        return view('candidate.interview', compact('user', 'interviews'));
     }
 
     /**

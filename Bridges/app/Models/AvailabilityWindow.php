@@ -5,8 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class AvailabilityWindow extends Model
 {
+    use HasFactory;
     protected $table = 'availability_windows';
 
     protected $fillable = [

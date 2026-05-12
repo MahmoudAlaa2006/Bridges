@@ -11,7 +11,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            \App\Strategies\LoadBalancerStrategy::class,
+            \App\Strategies\LowestWorkloadStrategy::class
+        );
     }
 
     /**
@@ -19,6 +22,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        \Illuminate\Support\Facades\Event::listen(
+            \App\Events\InterviewCreated::class,
+            \App\Listeners\GenerateInterviewBriefListener::class
+        );
+
+        \Illuminate\Support\Facades\Event::listen(
+            \App\Events\InterviewCreated::class,
+            \App\Listeners\SendInterviewNotificationsListener::class
+        );
     }
 }

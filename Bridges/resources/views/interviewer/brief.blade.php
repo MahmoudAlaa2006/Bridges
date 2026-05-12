@@ -19,7 +19,7 @@
       <h1 class="page-title mb-1">Candidate Brief</h1>
       <p class="text-muted mb-0">Full profile for the scheduled interview</p>
     </div>
-    <span class="status-badge badge-upcoming">Interview: May 10, 2026</span>
+    <span class="status-badge badge-upcoming">Interview: {{ $interview->get_date->format('M d, Y') }}</span>
   </div>
 
   <div class="row g-4">
@@ -31,22 +31,16 @@
       <div class="card mb-4">
         <div class="card-body">
           <div class="d-flex align-items-center gap-4 mb-4">
-            <div class="avatar-circle">AC</div>
+            <div class="avatar-circle">{{ substr($interview->user->first_name, 0, 1) }}{{ substr($interview->user->last_name, 0, 1) }}</div>
             <div>
-              <h2 class="candidate-name">Alex Chen</h2>
-              <p class="text-muted mb-1">Age: 27 &nbsp;·&nbsp; 5 years of experience</p>
-              <p class="text-muted mb-0">📍 San Francisco, CA &nbsp;·&nbsp; alex.chen@email.com</p>
+              <h2 class="candidate-name">{{ $interview->user->name }}</h2>
+              <p class="text-muted mb-1">Age: {{ $interview->user->age ?? 'N/A' }} &nbsp;·&nbsp; Application Stage: {{ $interview->user->current_stage ?? 'N/A' }}</p>
+              <p class="text-muted mb-0">📍 Location: N/A &nbsp;·&nbsp; {{ $interview->user->email }}</p>
             </div>
           </div>
-          <div class="section-label">Skills</div>
-          <div class="d-flex flex-wrap gap-2">
-            <span class="skill-tag">React</span>
-            <span class="skill-tag">TypeScript</span>
-            <span class="skill-tag">Node.js</span>
-            <span class="skill-tag">GraphQL</span>
-            <span class="skill-tag">PostgreSQL</span>
-            <span class="skill-tag">Docker</span>
-            <span class="skill-tag">AWS</span>
+          <div class="section-label">Generated Brief Content</div>
+          <div class="p-3 bg-dark-soft rounded-3" style="white-space: pre-wrap; font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.5; color: #d1d5db;">
+            {{ $brief ? $brief->content : 'No briefing content generated yet.' }}
           </div>
         </div>
       </div>
@@ -123,38 +117,27 @@
     <div class="col-lg-5">
 
       <!-- Job Details -->
+      @php
+          $job = $interview->application ? $interview->application->job : null;
+      @endphp
       <div class="card mb-4">
         <div class="card-body">
           <h5 class="card-title mb-4">Job Details</h5>
           <div class="detail-row">
             <span class="detail-label">Job Title</span>
-            <span class="detail-value">Senior Frontend Developer</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Type</span>
-            <span class="detail-value">Full-time</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Seniority</span>
-            <span class="detail-value">Senior</span>
+            <span class="detail-value">{{ $job ? $job->title : 'N/A' }}</span>
           </div>
           <div class="detail-row">
             <span class="detail-label">Work Mode</span>
             <span class="detail-value">Hybrid</span>
           </div>
           <div class="detail-row">
-            <span class="detail-label">Salary Range</span>
-            <span class="detail-value" style="color:#f5c542;">$110k – $145k</span>
+            <span class="detail-label">Seniority</span>
+            <span class="detail-value">Senior</span>
           </div>
-          <div class="mt-3">
-            <div class="detail-label mb-2">Required Skills</div>
-            <div class="d-flex flex-wrap gap-2">
-              <span class="skill-tag-sm">React</span>
-              <span class="skill-tag-sm">TypeScript</span>
-              <span class="skill-tag-sm">CSS3</span>
-              <span class="skill-tag-sm">REST APIs</span>
-              <span class="skill-tag-sm">Testing</span>
-            </div>
+          <div class="detail-row">
+            <span class="detail-label">Job Description</span>
+            <span class="detail-value" style="font-size: 12px; color: #9ca3af;">{{ $job ? $job->description : 'N/A' }}</span>
           </div>
         </div>
       </div>

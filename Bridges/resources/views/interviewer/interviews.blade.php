@@ -23,101 +23,66 @@
     </div>
 
     <div class="row g-4">
-      <!-- Card 1 -->
-      <div class="col-md-6 interview-item" data-status="upcoming">
-        <div class="card h-100 interview-card" onclick="openModal('Alex Chen', 'May 10, 2026 | 10:00 AM', 'Technical', 'Upcoming')">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <h5 class="candidate-name">Alex Chen</h5>
-              <span class="badge badge-upcoming">Upcoming</span>
-            </div>
-            <div class="interview-meta mb-3">May 10, 2026 &bull; 10:00 AM</div>
-            <div class="d-flex flex-wrap gap-2 mb-3">
-              <span class="meta-pill">HR: Sarah Johnson</span>
-              <span class="meta-pill">Panel: Senior Dev Team</span>
-              <span class="meta-pill">Type: Technical</span>
-            </div>
-            <p class="interview-desc">Full-stack React/Node.js role assessment. Focus on architecture.</p>
-            <div class="card-actions" onclick="event.stopPropagation()">
-              <a href="{{ route('interviewer.brief') }}" class="btn btn-secondary">View Brief</a>
-              <a href="{{ route('interviewer.interview-session') }}" class="btn btn-primary">Create Session</a>
-              <a href="{{ route('interviewer.feedback') }}" class="btn btn-secondary">Feedback</a>
-            </div>
-          </div>
-        </div>
-      </div>
+      @forelse($interviews as $interview)
+        @php
+            $candidate = $interview->user;
+            $hrMember = $interview->panels->first(fn($p) => $p->user->role === 'HR employee');
+            $seniorMember = $interview->panels->first(fn($p) => $p->user->interviewer_type === 'senior');
+            $statusClass = $interview->status === 'scheduled' ? 'upcoming' : 'completed';
+        @endphp
+        <!-- Card -->
+        <div class="col-md-6 interview-item" data-status="{{ $statusClass }}">
+          <div class="card h-100 interview-card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h5 class="candidate-name">{{ $candidate->name }}</h5>
+                <span class="badge badge-{{ $statusClass }}">{{ ucfirst($interview->status) }}</span>
+              </div>
+              <div class="interview-meta mb-3">
+                {{ $interview->get_date->format('M d, Y') }} &bull; {{ $interview->get_date->format('h:i A') }}
+              </div>
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <span class="meta-pill">HR: {{ $hrMember ? $hrMember->user->name : 'N/A' }}</span>
+                <span class="meta-pill">Senior: {{ $seniorMember ? $seniorMember->user->name : 'N/A' }}</span>
+                <span class="meta-pill">Type: Technical</span>
+              </div>
+              <p class="interview-desc">{{ $interview->content }}</p>
+              <div class="card-actions">
+                @if($interview->status === \App\Models\Interview::STATUS_SCHEDULED)
+                    @php
+                        $tz = $interview->slot->time_zone ?? config('app.timezone');
+                        $slotDate = \Carbon\Carbon::parse($interview->slot->date)->format('Y-m-d');
+                        $startTime = \Carbon\Carbon::parse($slotDate . ' ' . $interview->slot->start_time, $tz);
+                        $endTime = \Carbon\Carbon::parse($slotDate . ' ' . $interview->slot->end_time, $tz);
+                        $isActive = now()->between($startTime->subMinutes(5), $endTime);
+                    @endphp
+                    
+                    <a href="{{ route('interviewer.brief', ['id' => $interview->id]) }}" 
+                       class="btn btn-secondary {{ $interview->status === 'pending_feedback' ? 'disabled' : '' }}" 
+                       {{ $interview->status === 'pending_feedback' ? 'style=pointer-events:none;opacity:0.5' : '' }}>
+                        View Brief
+                    </a>
 
-      <!-- Card 2 -->
-      <div class="col-md-6 interview-item" data-status="upcoming">
-        <div class="card h-100 interview-card" onclick="openModal('Sara Liu', 'May 10, 2026 | 2:00 PM', 'Behavioral', 'Upcoming')">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <h5 class="candidate-name">Sara Liu</h5>
-              <span class="badge badge-upcoming">Upcoming</span>
-            </div>
-            <div class="interview-meta mb-3">May 10, 2026 &bull; 2:00 PM</div>
-            <div class="d-flex flex-wrap gap-2 mb-3">
-              <span class="meta-pill">HR: Mark Davis</span>
-              <span class="meta-pill">Panel: Product Team</span>
-              <span class="meta-pill">Type: Behavioral</span>
-            </div>
-            <p class="interview-desc">Product Manager candidate final round. Leadership principles.</p>
-            <div class="card-actions" onclick="event.stopPropagation()">
-              <a href="{{ route('interviewer.brief') }}" class="btn btn-secondary">View Brief</a>
-              <a href="{{ route('interviewer.interview-session') }}" class="btn btn-primary">Create Session</a>
-              <a href="{{ route('interviewer.feedback') }}" class="btn btn-secondary">Feedback</a>
+                    @if($isActive)
+                        <a href="{{ route('session.show', ['interview' => $interview->id]) }}" class="btn btn-primary">Create Session</a>
+                    @else
+                        <button class="btn btn-secondary" disabled title="Available 5 mins before start until end time" style="opacity: 0.5; cursor: not-allowed;">Create Session</button>
+                    @endif
+                @endif
+                
+                @if($interview->status === \App\Models\Interview::STATUS_PENDING_FEEDBACK)
+                    <button class="btn btn-secondary" disabled style="opacity: 0.5; cursor: not-allowed;">View Brief</button>
+                    <a href="{{ route('feedback.create', ['interview' => $interview->id]) }}" class="btn btn-warning">Submit Feedback</a>
+                @endif
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="col-md-6 interview-item" data-status="upcoming">
-        <div class="card h-100 interview-card" onclick="openModal('Mike Ross', 'May 12, 2026 | 9:30 AM', 'Technical', 'Upcoming')">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <h5 class="candidate-name">Mike Ross</h5>
-              <span class="badge badge-upcoming">Upcoming</span>
-            </div>
-            <div class="interview-meta mb-3">May 12, 2026 &bull; 9:30 AM</div>
-            <div class="d-flex flex-wrap gap-2 mb-3">
-              <span class="meta-pill">HR: Emily Clark</span>
-              <span class="meta-pill">Panel: Backend Team</span>
-              <span class="meta-pill">Type: Technical</span>
-            </div>
-            <p class="interview-desc">Backend system design and algorithms round.</p>
-            <div class="card-actions" onclick="event.stopPropagation()">
-              <a href="{{ route('interviewer.brief') }}" class="btn btn-secondary">View Brief</a>
-              <a href="{{ route('interviewer.interview-session') }}" class="btn btn-primary">Create Session</a>
-              <a href="{{ route('interviewer.feedback') }}" class="btn btn-secondary">Feedback</a>
-            </div>
-          </div>
+      @empty
+        <div class="col-12">
+            <div class="alert alert-info">No interviews found.</div>
         </div>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="col-md-6 interview-item" data-status="completed">
-        <div class="card h-100 interview-card" onclick="openModal('Olivia Brooks', 'May 5, 2026 | 11:00 AM', 'Technical', 'Completed')">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <h5 class="candidate-name">Olivia Brooks</h5>
-              <span class="badge badge-completed">Completed</span>
-            </div>
-            <div class="interview-meta mb-3">May 5, 2026 &bull; 11:00 AM</div>
-            <div class="d-flex flex-wrap gap-2 mb-3">
-              <span class="meta-pill">HR: Sarah Johnson</span>
-              <span class="meta-pill">Panel: Frontend Team</span>
-              <span class="meta-pill">Type: Technical</span>
-            </div>
-            <p class="interview-desc">Frontend architecture and UI components discussion.</p>
-            <div class="card-actions" onclick="event.stopPropagation()">
-              <a href="{{ route('interviewer.brief') }}" class="btn btn-secondary">View Brief</a>
-              <button class="btn btn-secondary" disabled style="opacity: 0.5; cursor: not-allowed;">Create Session</button>
-              <a href="{{ route('interviewer.feedback') }}" class="btn btn-secondary">Feedback</a>
-            </div>
-          </div>
-        </div>
-      </div>
+      @endforelse
     </div>
   </div>
 

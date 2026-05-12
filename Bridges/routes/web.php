@@ -102,6 +102,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/requisitions', [\App\Http\Controllers\HRAdminDashboardController::class, 'requisitions'])->name('requisitions');
         // HR-specific profile settings
         Route::get('/profile', [\App\Http\Controllers\HRAdminDashboardController::class, 'profile'])->name('profile');
+
+        // Extension and Escalation management
+        Route::post('/extensions/{extension}/handle', [\App\Http\Controllers\HRAdminDashboardController::class, 'handleExtension'])->name('extensions.handle');
+        Route::post('/escalations/{feedback}/resolve', [\App\Http\Controllers\HRAdminDashboardController::class, 'resolveEscalation'])->name('escalations.resolve');
     });
 
     /**
@@ -133,6 +137,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/brief', [\App\Http\Controllers\InterviewerDashboardController::class, 'brief'])->name('brief');
         Route::get('/profile', [\App\Http\Controllers\InterviewerDashboardController::class, 'profile'])->name('profile');
     });
+
+    /**
+     * ========================================================================
+     * INTERVIEW FLOW ROUTES (Shared)
+     * ========================================================================
+     */
+    Route::get('/interview-session/{interview}', [\App\Http\Controllers\SessionController::class, 'show'])->name('session.show');
+    Route::post('/interview-session/{interview}/end', [\App\Http\Controllers\SessionController::class, 'end'])->name('session.end');
+    Route::post('/interview-session/{interview}/extend', [\App\Http\Controllers\SessionController::class, 'requestExtension'])->name('session.extend');
+
+    Route::get('/interview-feedback/{interview}', [\App\Http\Controllers\FeedbackController::class, 'create'])->name('feedback.create');
+    Route::post('/interview-feedback/{interview}', [\App\Http\Controllers\FeedbackController::class, 'store'])->name('feedback.store');
 
 });
 
