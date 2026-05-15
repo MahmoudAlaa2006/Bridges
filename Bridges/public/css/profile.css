@@ -1,0 +1,8 @@
+/* Profile Specific Styles */
+.profile-header {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+}

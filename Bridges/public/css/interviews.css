@@ -1,0 +1,65 @@
+/* interviews.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.page-wrapper { padding: 24px; min-height: 100vh; }
+
+.page-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; color: #ffffff; }
+
+.card {
+  background-color: #231d30;
+  border: 1px solid #3d3555;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+.card-body { padding: 20px; }
+
+.badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.badge-upcoming { background: rgba(139,92,246,0.2); color: #a78bfa; }
+.badge-completed { background: rgba(34,197,94,0.2); color: #4ade80; }
+
+.btn { padding: 8px 16px; border-radius: 6px; font-weight: 500; font-size: 0.875rem; text-decoration: none; cursor: pointer; border: none; display: inline-block; text-align: center; }
+.btn-primary { background-color: #f5c542; color: #1a1625 !important; }
+.btn-primary:hover { background-color: #eab308; color: #1a1625 !important; }
+.btn-secondary { background-color: #3d3555; color: #ffffff !important; border: 1px solid #4c446b; }
+.btn-secondary:hover { background-color: #4c446b; color: #ffffff !important; }
+
+/* tabs */
+.filter-tabs { display: flex; gap: 8px; }
+.filter-tab {
+  background-color: #2d2640;
+  color: #9ca3af;
+  border: 1px solid #3d3555;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.filter-tab:hover { background-color: #3d3555; color: #fff; }
+.filter-tab.active { background-color: #f5c542; color: #1a1625; border-color: #f5c542; }
+
+/* cards specific */
+.interview-card { cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
+.interview-card:hover { transform: translateY(-2px); border-color: #f5c542; }
+.candidate-name { color: #ffffff; font-size: 1.125rem; font-weight: 600; margin: 0; }
+.interview-meta { color: #9ca3af; font-size: 0.875rem; }
+.meta-pill { background-color: #2d2640; border: 1px solid #3d3555; color: #e2e8f0; font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; }
+.interview-desc { color: #e2e8f0; font-size: 0.875rem; margin-bottom: 1.5rem; line-height: 1.5; }
+.card-actions { display: flex; gap: 8px; }
+
+/* modals */
+.modal-backdrop { position: fixed; inset: 0; background-color: rgba(0,0,0,0.7); z-index: 9998; }
+.custom-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; max-width: 500px; background-color: #231d30; border: 1px solid #3d3555; border-radius: 8px; z-index: 9999; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #3d3555; padding: 16px 20px; }
+.modal-title { color: #ffffff; font-size: 1.125rem; font-weight: 600; margin: 0; }
+.btn-close-custom { background: none; border: none; color: #9ca3af; font-size: 1.5rem; cursor: pointer; line-height: 1; padding: 0; }
+.btn-close-custom:hover { color: #fff; }
+.modal-body { padding: 20px; color: #ffffff; font-size: 0.875rem; line-height: 1.6; }
+.modal-footer { display: flex; justify-content: flex-end; border-top: 1px solid #3d3555; padding: 16px 20px; }
