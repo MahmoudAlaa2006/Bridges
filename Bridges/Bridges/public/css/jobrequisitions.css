@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #1a1625;
+  color: #ffffff;
+}
+
+.page-wrapper {
+  padding: 24px;
+  min-height: 100vh;
+  background-color: #1a1625;
+}
+
+h1, h2, h3, h4, h5, h6, p, span, div {
+  color: #ffffff;
+}
+
+.text-muted {
+  color: #9ca3af !important;
+}
+
+.bg-card {
+  background-color: #231d30 !important;
+}
+
+.bg-input {
+  background-color: #2d2640 !important;
+}
+
+.border-card {
+  border: 1px solid #3d3555 !important;
+}
+
+.custom-btn-primary {
+  background-color: #f5c542;
+  border-color: #f5c542;
+  color: #1a1625 !important;
+}
+
+.custom-btn-primary:hover {
+  background-color: #eab308;
+  border-color: #eab308;
+  color: #1a1625 !important;
+}
+
+.custom-badge {
+  display: inline-flex;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-approved {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+.badge-pending {
+  background-color: rgba(245, 197, 66, 0.2);
+  color: #f5c542;
+}
+
+.badge-rejected {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.req-card:hover {
+  border-color: #8b5cf6 !important;
+}
+
+.custom-tabs {
+  border-bottom: 1px solid #3d3555;
+}
+
+.custom-tabs .nav-link {
+  color: #9ca3af;
+  border: none;
+  background: transparent;
+  padding: 12px 20px;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+}
+
+.custom-tabs .nav-link:hover {
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.custom-tabs .nav-link.active {
+  color: #f5c542;
+  background: transparent;
+  border-bottom: 2px solid #f5c542;
+}
+
+.custom-alert {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171 !important;
+}
+
+.custom-alert * {
+  color: #f87171 !important;
+}
+
+.modal-backdrop.show {
+  opacity: 0.7;
+}
+
+.custom-modal {
+  background-color: #231d30;
+  border: 1px solid #3d3555;
+}
